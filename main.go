@@ -1,21 +1,21 @@
 package main
 
 import (
-	gee "WebGogo/gee"
-	"fmt"
 	"net/http"
+
+	"gee"
 )
 
 func main() {
-	r := gee.New()
-	r.GET("/", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintf(w, "url.path = %q\n", req.URL.Path)
+	r := gee.Default()
+	r.GET("/", func(c *gee.Context) {
+		c.String(http.StatusOK, "Hello Geektutu\n")
+	})
+	// index out of range for testing Recovery()
+	r.GET("/panic", func(c *gee.Context) {
+		names := []string{"geektutu"}
+		c.String(http.StatusOK, names[100])
 	})
 
-	r.Get("/hellow", func(w http.ResponseWriter, req *http.Request) {
-		for k, v := range req.Header {
-			fmt.Fprintf(w, "Header[%q]=%q\n", k, v)
-		}
-	})
-	r.Run(":8888")
+	r.Run(":9999")
 }
