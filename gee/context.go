@@ -33,7 +33,7 @@ func (c *Context) Query(key string) string {
 	return c.Req.URL.Query().Get(key)
 }
 
-func (c *Context) Status(code int) string {
+func (c *Context) Status(code int) {
 	c.StatusCode = code
 	c.Writer.WriteHeader(code)
 }
