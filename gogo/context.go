@@ -1,4 +1,4 @@
-package gee
+package gogo
 
 import (
 	"encoding/json"

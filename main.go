@@ -3,11 +3,11 @@ package main
 import (
 	"net/http"
 
-	"gee"
+	"WebGogo/gogo"
 )
 
 func main() {
-	r := gee.Default()
+	r := gogo.Default()
 	r.GET("/", func(c *gee.Context) {
 		c.String(http.StatusOK, "Hello Geektutu\n")
 	})
