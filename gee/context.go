@@ -21,6 +21,9 @@ type Context struct {
 	// middleware
 	handlers []HandlerFunc
 	index int
+
+	// engine pointer
+	engine *Engine
 }
 
 func (c *Context) Param(key string) string {
@@ -77,16 +80,20 @@ func (c *Context) Data(code int, data []byte) {
 	c.Writer.Write(data)
 }
 
-func (c *Context) HTML(code int, html string) {
-	c.SetHeader("Content-Type", "text/html")
-	c.Status(code)
-	c.Writer.Write([]byte(html))
-}
+
 
 func (c *Context) Next() {
 	c.index ++
 	s := len(c.handlers)
 	for ; c.index< s; c.index++ {
 		c.handlers[c.index](c)
+	}
+}
+
+func (c *Context) HTML (code int, name string, data interface{}) {
+	c.SetHeader("Content-Type", "text/html")
+	c.Status(code)
+	if err := c.engine.htmlTemplates.ExecuteTemplate(c.Writer, name, data); err != nil {
+		c.Fail(500, err.Error())
 	}
 }
